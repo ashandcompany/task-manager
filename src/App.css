@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --color-roseraie-50: #fcedf4;
+  --color-roseraie-100: #fadeec;
+  --color-roseraie-200: #f4b8d9;
+  --color-roseraie-300: #f094c9;
+  --color-roseraie-400: #eb68b9;
+  --color-roseraie-500: #d440a0;
+  --color-roseraie-600: #ab3281;
+  --color-roseraie-700: #802360;
+  --color-roseraie-800: #5b1644;
+  --color-roseraie-900: #360926;
+  --color-roseraie-950: #240519;
+}
