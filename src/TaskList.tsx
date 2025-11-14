@@ -36,7 +36,7 @@ export default function TaskList({ tasks, onEdit, onDelete }: TaskListProps) {
         <ul className="w-full">
             {tasks.length === 0 ? (
                 <li className="w-full">
-                    <div className="flex items-center justify-center bg-roseraie-50 py-6 px-6 rounded-lg shadow-md mb-4 text-roseraie-600">
+                    <div className="flex items-center justify-center bg-white py-6 px-6 rounded-lg shadow-md mb-4 text-roseraie-600">
                         Aucune tâche à afficher
                     </div>
                 </li>
