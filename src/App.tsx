@@ -1,5 +1,5 @@
 // App.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import type { Task } from "./types";
@@ -7,12 +7,20 @@ import "./App.css";
 import { Plus, Filter, SortAsc, SortDesc } from "lucide-react";
 
 export default function TaskApp() {
-    const [tasks, setTasks] = useState<Task[]>([]);
+    const [tasks, setTasks] = useState<Task[]>(() => {
+        const saved = localStorage.getItem("tasks");
+        return saved ? JSON.parse(saved) : [];
+    });
+
     const [editingTask, setEditingTask] = useState<Task | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+
+    useEffect(() => {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }, [tasks]);
 
     const addTask = (task: Omit<Task, "id">) => {
         const newTask: Task = { id: Date.now(), ...task };
@@ -63,13 +71,13 @@ export default function TaskApp() {
 
                 {/* Filtre Catégorie */}
                 <div className="relative w-full sm:w-auto">
-                    <button 
+                    <button
                         onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
                         className="shadow-sm transition bg-white rounded-lg px-3 py-2 w-full sm:w-auto focus:outline-none hover:bg-roseraie-200 flex items-center gap-2"
                         aria-haspopup="true"
                         aria-expanded={isCategoryDropdownOpen}
                     >
-                        <Filter width={16}/>
+                        <Filter width={16} />
                         <span className="truncate text-roseraie-800">
                             {selectedCategory ? `Catégorie : ${selectedCategory}` : 'Filtrer par catégorie'}
                         </span>
@@ -110,7 +118,7 @@ export default function TaskApp() {
                     aria-label={`Trier par date limite (${sortOrder})`}
                     className="shadow-sm transition bg-white rounded-lg px-3 py-2 w-full sm:w-auto focus:outline-none hover:bg-roseraie-200 flex items-center gap-2"
                 >
-                    {sortOrder === 'asc' ? <SortAsc width={16}/> : <SortDesc width={16}/>}
+                    {sortOrder === 'asc' ? <SortAsc width={16} /> : <SortDesc width={16} />}
                     Trier par date limite
                 </button>
             </div>
@@ -125,7 +133,7 @@ export default function TaskApp() {
                     onClick={() => setIsModalOpen(true)}
                     className="flex justify-center items-center text-white bg-roseraie-500 transition hover:bg-roseraie-600 border border-transparent shadow-xs font-medium leading-5 rounded-lg text-sm px-3 py-2 focus:outline-none"
                 >
-                    <Plus width={16} className="mr-1"/>Ajouter
+                    <Plus width={16} className="mr-1" />Ajouter
                 </button>
             </div>
 
