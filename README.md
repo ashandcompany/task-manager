@@ -19,7 +19,7 @@ npm --version
 ### 1. Cloner ou télécharger le projet
 
 ```bash
-git clone <url-du-repository>
+git clone https://github.com/ashandcompany/task-manager.git
 cd task-manager
 ```
 
