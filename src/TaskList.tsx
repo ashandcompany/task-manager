@@ -1,6 +1,7 @@
 import type { Task } from "./types";
 import { useEffect, useRef, useState } from "react";
 import { Clock, EllipsisVertical } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TaskListProps {
     tasks: Task[];
@@ -41,108 +42,115 @@ export default function TaskList({ tasks, onEdit, onDelete }: TaskListProps) {
                     </div>
                 </li>
             ) : (
-                tasks.map((task) => (
-                    <li key={task.id} className="w-full">
-                        <div
-                            className="
-                                flex flex-col sm:flex-row sm:items-center justify-between 
-                                bg-white py-4 px-4 sm:px-6 rounded-lg shadow-md mb-4 gap-3
-                            "
+                <AnimatePresence>
+                    {tasks.map((task) => (
+                        <motion.li
+                            key={task.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.3 }}
+                            className="w-full"
                         >
-                            <div className="flex flex-col gap-0 w-full sm:w-auto">
-                                <p className="text-base sm:text-lg font-medium line-clamp-1 break-all text-roseraie-800">
-                                    {task.description}
-                                </p>
-                                <span className="text-xs sm:text-sm text-roseraie-700">{task.category}</span>
-                            </div>
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-white py-4 px-4 sm:px-6 rounded-lg shadow-md mb-4 gap-3">
+                                <div className="flex flex-col gap-0 w-full sm:w-auto">
+                                    <p className="text-base sm:text-lg font-medium line-clamp-1 break-all text-roseraie-800">
+                                        {task.description}
+                                    </p>
+                                    <span className="text-xs sm:text-sm text-roseraie-700">{task.category}</span>
+                                </div>
 
-                            <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
-                                {task.priority && (
-                                    <div
-                                        className={`
-                                            text-xs sm:text-sm font-medium px-2 py-1 rounded-md inline-block w-fit
-                                            ${task.priority === "Haute"
-                                                ? "bg-roseraie-500 text-white"
-                                                : task.priority === "Moyenne"
-                                                    ? "bg-roseraie-300 text-roseraie-800"
-                                                    : "bg-roseraie-100 text-roseraie-800"
-                                            }
-                                        `}
-                                    >
-                                        {task.priority}
-                                    </div>
-                                )}
-                                <small className="flex items-center gap-1 text-roseraie-700">
-                                    {(() => {
-                                        const d = new Date(task.deadline);
-                                        if (isNaN(d.getTime())) return "Date invalide";
-                                        const diff = Math.ceil((d.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-                                        if (diff > 0)
-                                            return (
-                                                <span className="flex gap-1 items-center">
-                                                    <Clock width={14} />{" "}
-                                                    <div className="font-medium text-xs sm:text-sm">
-                                                        {diff} jour{diff > 1 ? "s" : ""} restants
-                                                    </div>
-                                                </span>
-                                            );
-                                        if (diff === 0) return "Dernier jour";
-                                        return "Expiré";
-                                    })()}
-                                </small>
-
-                                <div
-                                    ref={(el) => {
-                                        if (openId === task.id) menuContainerRef.current = el;
-                                    }}
-                                    className="relative"
-                                >
-                                    <button
-                                        aria-haspopup="true"
-                                        aria-expanded={openId === task.id}
-                                        aria-label="Ouvrir le menu"
-                                        className="p-1 rounded-full hover:bg-roseraie-200 transition"
-                                        onClick={() => setOpenId((prev) => (prev === task.id ? null : task.id))}
-                                    >
-                                        <EllipsisVertical width={21} />
-                                    </button>
-
-                                    {openId === task.id && (
+                                <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
+                                    {task.priority && (
                                         <div
-                                            className="
-                                                absolute right-0 mt-2 w-40 bg-roseraie-100 rounded-md 
-                                                shadow-lg z-10 border border-roseraie-200
-                                            "
-                                            role="menu"
-                                            aria-label="Actions"
+                                            className={`
+                                                text-xs sm:text-sm font-medium px-2 py-1 rounded-md inline-block w-fit
+                                                ${task.priority === "Haute"
+                                                    ? "bg-roseraie-500 text-white"
+                                                    : task.priority === "Moyenne"
+                                                        ? "bg-roseraie-300 text-roseraie-800"
+                                                        : "bg-roseraie-100 text-roseraie-800"
+                                                }
+                                            `}
                                         >
-                                            <button
-                                                className="w-full text-left px-4 py-2 hover:bg-roseraie-200 transition"
-                                                role="menuitem"
-                                                onClick={() => {
-                                                    setOpenId(null);
-                                                    onEdit(task);
-                                                }}
-                                            >
-                                                Modifier
-                                            </button>
-                                            <button
-                                                className="w-full text-left px-4 py-2 hover:bg-roseraie-200 text-roseraie-800 transition"
-                                                role="menuitem"
-                                                onClick={() => {
-                                                    setOpenId(null);
-                                                    onDelete(task.id);
-                                                }}
-                                            >
-                                                Supprimer
-                                            </button>
+                                            {task.priority}
                                         </div>
                                     )}
+                                    <small className="flex items-center gap-1 text-roseraie-700">
+                                        {(() => {
+                                            const d = new Date(task.deadline);
+                                            if (isNaN(d.getTime())) return "Date invalide";
+                                            const diff = Math.ceil((d.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                                            if (diff > 0)
+                                                return (
+                                                    <span className="flex gap-1 items-center">
+                                                        <Clock width={14} />{" "}
+                                                        <div className="font-medium text-xs sm:text-sm">
+                                                            {diff} jour{diff > 1 ? "s" : ""} restants
+                                                        </div>
+                                                    </span>
+                                                );
+                                            if (diff === 0) return "Dernier jour";
+                                            return "Expiré";
+                                        })()}
+                                    </small>
+
+                                    <div
+                                        ref={(el) => {
+                                            if (openId === task.id) menuContainerRef.current = el;
+                                        }}
+                                        className="relative"
+                                    >
+                                        <button
+                                            aria-haspopup="true"
+                                            aria-expanded={openId === task.id}
+                                            aria-label="Ouvrir le menu"
+                                            className="p-1 rounded-full hover:bg-roseraie-200 transition"
+                                            onClick={() => setOpenId((prev) => (prev === task.id ? null : task.id))}
+                                        >
+                                            <EllipsisVertical width={21} />
+                                        </button>
+
+                                        <AnimatePresence>
+                                            {openId === task.id && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, scale: 0.9 }}
+                                                    animate={{ opacity: 1, scale: 1 }}
+                                                    exit={{ opacity: 0, scale: 0.9 }}
+                                                    transition={{ duration: 0.15 }}
+                                                    className="absolute right-0 mt-2 w-40 bg-roseraie-100 rounded-md shadow-lg z-10 border border-roseraie-200"
+                                                    role="menu"
+                                                    aria-label="Actions"
+                                                >
+                                                    <button
+                                                        className="w-full text-left px-4 py-2 hover:bg-roseraie-200 transition"
+                                                        role="menuitem"
+                                                        onClick={() => {
+                                                            setOpenId(null);
+                                                            onEdit(task);
+                                                        }}
+                                                    >
+                                                        Modifier
+                                                    </button>
+                                                    <button
+                                                        className="w-full text-left px-4 py-2 hover:bg-roseraie-200 text-roseraie-800 transition"
+                                                        role="menuitem"
+                                                        onClick={() => {
+                                                            setOpenId(null);
+                                                            onDelete(task.id);
+                                                        }}
+                                                    >
+                                                        Supprimer
+                                                    </button>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                ))
+                        </motion.li>
+                    ))}
+                </AnimatePresence>
             )}
         </ul>
     );

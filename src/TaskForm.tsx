@@ -5,6 +5,8 @@ import type { Task } from "./types";
 import ModalWrapper from "./components/ModalWrapper";
 import TaskFormFields from "./components/TaskFormFields";
 
+import styles from "./buttons.module.css";
+
 interface TaskFormProps {
     onAdd: (task: Omit<Task, "id">) => void;
     onUpdate: (task: Task) => void;
@@ -74,14 +76,14 @@ export default function TaskForm({
                     <button
                         type="button"
                         onClick={handleCancel}
-                        className="text-roseraie-800 bg-roseraie-100 border border-roseraie-300 hover:bg-roseraie-200 rounded-lg text-sm px-4 py-2"
+                        className={styles.cancel}
                     >
                         Annuler
                     </button>
 
                     <button
                         type="submit"
-                        className="text-white bg-roseraie-500 hover:bg-roseraie-600 rounded-lg text-sm px-4 py-2"
+                        className={styles.submit}
                     >
                         {editingTask ? "Modifier" : "Ajouter"}
                     </button>

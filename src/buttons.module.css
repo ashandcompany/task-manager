@@ -1,0 +1,43 @@
+:root {
+  --cancel-bg: #f7e7ed;
+  --cancel-color: #7a4159;
+  --submit-bg: #d26b86;
+  --submit-color: white;
+}
+
+/* Boutons */
+.base-button {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  transition: background 0.3s, color 0.3s;
+}
+
+.cancel {
+  composes: base-button;
+  color: var(--cancel-color);
+  background: color-mix(in srgb, var(--cancel-bg) 80%, white);
+  border: 1px solid color-mix(in srgb, #d9b9c7 90%, var(--cancel-color));
+
+  &:hover {
+    background: color-mix(in srgb, var(--cancel-bg) 85%, black 10%);
+  }
+}
+
+.submit {
+  composes: base-button;
+  color: var(--submit-color);
+  background: color-mix(in srgb, var(--submit-bg) 100%, transparent);
+
+  &:hover {
+    background: color-mix(in srgb, var(--submit-bg) 80%, black 20%);
+  }
+}
+
+@media (max-width: 48em) {
+  .base-button {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+

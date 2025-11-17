@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -15,4 +14,8 @@
   --color-roseraie-800: #5b1644;
   --color-roseraie-900: #360926;
   --color-roseraie-950: #240519;
+}
+
+body {
+  font-family: "Sour Gummy", sans-serif;
 }

@@ -64,7 +64,7 @@ export default function TaskApp() {
         });
 
     return (
-        <div className="bg-roseraie-50 min-h-screen py-8 px-4 sm:px-8 lg:px-12 font-sourgummy">
+        <div className="bg-roseraie-50 min-h-screen py-8 px-4 sm:px-8 lg:px-12">
 
             {/* Filtres */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
